@@ -5,10 +5,10 @@ import pandas as pd
 st.set_page_config(page_title="CRM Dashboard", layout="wide")
 
 st.title("📊 CRM Dashboard")
-# st.write("This dashboard loads customer data directly from GitHub.")
+#st.write("This dashboard loads customer data directly from GitHub.")
 
 # GitHub raw URL
-github_url = "https://raw.githubusercontent.com/Aahana2710/crmproject/customerdata100.xlsx"# <-- Replace with your actual raw .xlsx URL
+github_url = "https://raw.githubusercontent.com/Aahana2710/crmproject/main/customerdata100.xlsx"
 
 # Read Excel from GitHub
 @st.cache_data
