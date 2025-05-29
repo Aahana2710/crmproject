@@ -2,25 +2,34 @@ import streamlit as st
 import pandas as pd
 
 # Page setup
-st.set_page_config(page_title="CRM Dashboard (India)",layout="wide")
-st.title(" CRM Dashboard")
+st.set_page_config(page_title="CRM Dashboard (India)", layout="wide")
+st.title("CRM Dashboard")
 
 # Load the Excel file
 @st.cache_data
 def load_data():
-    return pd.read_excel("indian_customerdata100.xlsx")
+    return pd.read_excel("indian_customerdata100_final.xlsx")
 
 df = load_data()
 
 # Sidebar filters
 st.sidebar.header("🔍 Filter Customers")
 
-city_filter = st.sidebar.multiselect("City", sorted(df['City'].unique()))
-state_filter = st.sidebar.multiselect("State", sorted(df['State'].unique()))
-country_filter = st.sidebar.selectbox("Country", sorted(df['Country'].unique()))
+city_filter = st.sidebar.multiselect("City", sorted(df['City'].dropna().unique()))
+state_filter = st.sidebar.multiselect("State", sorted(df['State'].dropna().unique()))
+country_filter = st.sidebar.selectbox("Country", sorted(df['Country'].dropna().unique()))
+region_filter = st.sidebar.multiselect("Region", sorted(df['Region'].dropna().unique()))
+product_filter = st.sidebar.multiselect("Product", sorted(df['Product'].dropna().unique()))
+company_filter = st.sidebar.multiselect("Company", sorted(df['Company'].dropna().unique()))
 
-region_filter = st.sidebar.multiselect("Region", sorted(df['Region'].unique()))
-product_filter = st.sidebar.multiselect("Product", sorted(df['Product'].unique()))
+# Age range filter
+age_category = st.sidebar.selectbox("Age Group", ["All", "0–10", "11–20", "21–30", "31–40", "41+"])
+
+# 📊 Price category filter
+price_category = st.sidebar.selectbox(
+    "Price Category",
+    ["All", "Less than ₹5,000", "₹5,000–₹10,000", "₹10,001–₹20,000", "₹20,001–₹50,000", "Above ₹50,000"]
+)
 
 # Text search
 st.sidebar.subheader("🔎 Search")
@@ -40,12 +49,42 @@ if region_filter:
     filtered_df = filtered_df[filtered_df['Region'].isin(region_filter)]
 if product_filter:
     filtered_df = filtered_df[filtered_df['Product'].isin(product_filter)]
+if company_filter:
+    filtered_df = filtered_df[filtered_df['Company'].isin(company_filter)]
 
+# Age category filtering
+if age_category != "All":
+    if age_category == "0–10":
+        filtered_df = filtered_df[filtered_df['Age'] <= 10]
+    elif age_category == "11–20":
+        filtered_df = filtered_df[(filtered_df['Age'] >= 11) & (filtered_df['Age'] <= 20)]
+    elif age_category == "21–30":
+        filtered_df = filtered_df[(filtered_df['Age'] >= 21) & (filtered_df['Age'] <= 30)]
+    elif age_category == "31–40":
+        filtered_df = filtered_df[(filtered_df['Age'] >= 31) & (filtered_df['Age'] <= 40)]
+    elif age_category == "41+":
+        filtered_df = filtered_df[filtered_df['Age'] >= 41]
+
+# Price category filtering
+if price_category != "All":
+    if price_category == "Less than ₹5,000":
+        filtered_df = filtered_df[filtered_df['Price'] < 5000]
+    elif price_category == "₹5,000–₹10,000":
+        filtered_df = filtered_df[(filtered_df['Price'] >= 5000) & (filtered_df['Price'] <= 10000)]
+    elif price_category == "₹10,001–₹20,000":
+        filtered_df = filtered_df[(filtered_df['Price'] > 10000) & (filtered_df['Price'] <= 20000)]
+    elif price_category == "₹20,001–₹50,000":
+        filtered_df = filtered_df[(filtered_df['Price'] > 20000) & (filtered_df['Price'] <= 50000)]
+    elif price_category == "Above ₹50,000":
+        filtered_df = filtered_df[filtered_df['Price'] > 50000]
+
+# Search filters
 if search_id:
-    filtered_df = filtered_df[filtered_df['Customer ID'].str.contains(search_id, case=False)]
+    filtered_df = filtered_df[filtered_df['Customer ID'].astype(str).str.contains(search_id, case=False)]
 if search_name:
     filtered_df = filtered_df[filtered_df['Name'].str.contains(search_name, case=False)]
-    # Display applied filters
+
+# Display applied filters
 st.subheader("🧾 Applied Filters")
 
 if state_filter:
@@ -58,6 +97,12 @@ if region_filter:
     st.write("Region:", ", ".join(region_filter))
 if product_filter:
     st.write("Product:", ", ".join(product_filter))
+if company_filter:
+    st.write("Company:", ", ".join(company_filter))
+if age_category != "All":
+    st.write("Age Group:", age_category)
+if price_category != "All":
+    st.write("Price Category:", price_category)
 if search_id:
     st.write("Customer ID contains:", search_id)
 if search_name:
@@ -67,6 +112,7 @@ if search_name:
 st.subheader("📄 Filtered Data")
 st.dataframe(filtered_df, use_container_width=True)
 st.success(f"Showing {len(filtered_df)} out of {len(df)} records.")
+
 
 
 
