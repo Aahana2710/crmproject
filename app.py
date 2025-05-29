@@ -3,7 +3,7 @@ import pandas as pd
 
 # Page setup
 st.set_page_config(page_title="CRM Dashboard (India)",layout="wide")
-st.title("📊 CRM Dashboard - Indian Dataset")
+st.title(" CRM Dashboard")
 
 # Load the Excel file
 @st.cache_data
