@@ -35,7 +35,7 @@ if city_filter:
 if state_filter:
     filtered_df = filtered_df[filtered_df['State'].isin(state_filter)]
 if country_filter:
-    filtered_df = df[df['Country'] == country_filter]
+    filtered_df = filtered_df[filtered_df['Country'] == country_filter]
 if region_filter:
     filtered_df = filtered_df[filtered_df['Region'].isin(region_filter)]
 if product_filter:
