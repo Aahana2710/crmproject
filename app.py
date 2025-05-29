@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 
 # Page setup
-st.set_page_config(page_title="CRM Dashboard ",layout="wide")
-st.title("📊 CRM Dashboard -  Dataset")
+st.set_page_config(page_title="CRM Dashboard (India)",layout="wide")
+st.title("📊 CRM Dashboard - Indian Dataset")
 
 # Load the Excel file
 @st.cache_data
@@ -17,9 +17,8 @@ st.sidebar.header("🔍 Filter Customers")
 
 city_filter = st.sidebar.multiselect("City", sorted(df['City'].unique()))
 state_filter = st.sidebar.multiselect("State", sorted(df['State'].unique()))
-# country_filter = st.sidebar.selectbox("Country", sorted(df['Country'].unique()))
-selected_country = st.selectbox("Select a country:", countries)
-st.write("You selected:", selected_country)
+country_filter = st.sidebar.selectbox("Country", sorted(df['Country'].unique()))
+
 region_filter = st.sidebar.multiselect("Region", sorted(df['Region'].unique()))
 product_filter = st.sidebar.multiselect("Product", sorted(df['Product'].unique()))
 
@@ -36,7 +35,7 @@ if city_filter:
 if state_filter:
     filtered_df = filtered_df[filtered_df['State'].isin(state_filter)]
 if country_filter:
-    filtered_df = filtered_df[filtered_df['Country'].isin(country_filter)]
+    filtered_df = df[df['Country'] == country_filter]
 if region_filter:
     filtered_df = filtered_df[filtered_df['Region'].isin(region_filter)]
 if product_filter:
@@ -51,4 +50,3 @@ if search_name:
 st.subheader("📄 Filtered Data")
 st.dataframe(filtered_df, use_container_width=True)
 st.success(f"Showing {len(filtered_df)} out of {len(df)} records.")
-
