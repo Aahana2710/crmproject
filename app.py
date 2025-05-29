@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 
 # Page setup
-st.set_page_config(page_title="CRM Dashboard (India)",layout="wide")
-st.title("📊 CRM Dashboard - Indian Dataset")
+st.set_page_config(page_title="CRM Dashboard ",layout="wide")
+st.title("📊 CRM Dashboard -  Dataset")
 
 # Load the Excel file
 @st.cache_data
@@ -17,7 +17,7 @@ st.sidebar.header("🔍 Filter Customers")
 
 city_filter = st.sidebar.multiselect("City", sorted(df['City'].unique()))
 state_filter = st.sidebar.multiselect("State", sorted(df['State'].unique()))
-country_filter = st.sidebar.multiselect("Country", sorted(df['Country'].unique()))
+country_filter = st.sidebar.selectbox("Country", sorted(df['Country'].unique()))
 region_filter = st.sidebar.multiselect("Region", sorted(df['Region'].unique()))
 product_filter = st.sidebar.multiselect("Product", sorted(df['Product'].unique()))
 
