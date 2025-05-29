@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 # Page setup
-st.set_page_config(page_title="CRM Dashboard (India)", layout="wide")
+st.set_page_config(page_title="CRM Dashboard (India)")
 st.title("📊 CRM Dashboard - Indian Dataset")
 
 # Load the Excel file
