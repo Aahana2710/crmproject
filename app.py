@@ -45,6 +45,29 @@ if search_id:
     filtered_df = filtered_df[filtered_df['Customer ID'].str.contains(search_id, case=False)]
 if search_name:
     filtered_df = filtered_df[filtered_df['Name'].str.contains(search_name, case=False)]
+    # Display applied filters
+st.subheader("🧾 Applied Filters")
+
+if state_filter:
+    st.write("State:", ", ".join(state_filter))
+if city_filter:
+    st.write("City:", ", ".join(city_filter))
+if country_filter:
+    st.write("Country:", country_filter)
+if region_filter:
+    st.write("Region:", ", ".join(region_filter))
+if product_filter:
+    st.write("Product:", ", ".join(product_filter))
+if search_id:
+    st.write("Customer ID contains:", search_id)
+if search_name:
+    st.write("Customer Name contains:", search_name)
+
+# Display filtered data
+st.subheader("📄 Filtered Data")
+st.dataframe(filtered_df, use_container_width=True)
+st.success(f"Showing {len(filtered_df)} out of {len(df)} records.")
+
 
 # Display data
 st.subheader("📄 Filtered Data")
