@@ -17,7 +17,9 @@ st.sidebar.header("🔍 Filter Customers")
 
 city_filter = st.sidebar.multiselect("City", sorted(df['City'].unique()))
 state_filter = st.sidebar.multiselect("State", sorted(df['State'].unique()))
-country_filter = st.sidebar.selectbox("Country", sorted(df['Country'].unique()))
+# country_filter = st.sidebar.selectbox("Country", sorted(df['Country'].unique()))
+selected_country = st.selectbox("Select a country:", countries)
+st.write("You selected:", selected_country)
 region_filter = st.sidebar.multiselect("Region", sorted(df['Region'].unique()))
 product_filter = st.sidebar.multiselect("Product", sorted(df['Product'].unique()))
 
