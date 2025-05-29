@@ -1,32 +1,27 @@
 import streamlit as st
 import pandas as pd
 
-# Page config
-st.set_page_config(page_title="CRM Dashboard", layout="wide")
+# Page setup
+st.set_page_config(page_title="CRM Dashboard (India)", layout="wide")
+st.title("📊 CRM Dashboard - Indian Dataset")
 
-st.title("📊 CRM Dashboard")
-#st.write("This dashboard loads customer data directly from GitHub.")
-
-# GitHub raw URL
-github_url = "https://raw.githubusercontent.com/Aahana2710/crmproject/main/customerdata100.xlsx"
-
-# Read Excel from GitHub
+# Load the Excel file
 @st.cache_data
-def load_data(url):
-    return pd.read_excel(url)
+def load_data():
+    return pd.read_excel("indian_customerdata100.xlsx")
 
-df = load_data(github_url)
+df = load_data()
 
 # Sidebar filters
-st.sidebar.header("🔍 Filter Data")
+st.sidebar.header("🔍 Filter Customers")
 
-city_filter = st.sidebar.multiselect("City", options=sorted(df['City'].dropna().unique()))
-state_filter = st.sidebar.multiselect("State", options=sorted(df['State'].dropna().unique()))
-country_filter = st.sidebar.multiselect("Country", options=sorted(df['Country'].dropna().unique()))
-region_filter = st.sidebar.multiselect("Region", options=sorted(df['Region'].dropna().unique()))
-product_filter = st.sidebar.multiselect("Product", options=sorted(df['Product'].dropna().unique()))
+city_filter = st.sidebar.multiselect("City", sorted(df['City'].unique()))
+state_filter = st.sidebar.multiselect("State", sorted(df['State'].unique()))
+country_filter = st.sidebar.multiselect("Country", sorted(df['Country'].unique()))
+region_filter = st.sidebar.multiselect("Region", sorted(df['Region'].unique()))
+product_filter = st.sidebar.multiselect("Product", sorted(df['Product'].unique()))
 
-# Search by ID or Name
+# Text search
 st.sidebar.subheader("🔎 Search")
 search_id = st.sidebar.text_input("Customer ID")
 search_name = st.sidebar.text_input("Customer Name")
@@ -46,11 +41,12 @@ if product_filter:
     filtered_df = filtered_df[filtered_df['Product'].isin(product_filter)]
 
 if search_id:
-    filtered_df = filtered_df[filtered_df['Customer ID'].str.contains(search_id, case=False, na=False)]
+    filtered_df = filtered_df[filtered_df['Customer ID'].str.contains(search_id, case=False)]
 if search_name:
-    filtered_df = filtered_df[filtered_df['Name'].str.contains(search_name, case=False, na=False)]
+    filtered_df = filtered_df[filtered_df['Name'].str.contains(search_name, case=False)]
 
-# Display
+# Display data
 st.subheader("📄 Filtered Data")
 st.dataframe(filtered_df, use_container_width=True)
 st.success(f"Showing {len(filtered_df)} out of {len(df)} records.")
+
