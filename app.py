@@ -129,3 +129,8 @@ if search_id:
     st.write("Customer ID contains:", search_id)
 if search_name:
     st.write("Customer Name contains:", search_name)
+# Display filtered data
+st.subheader("📄 Filtered Data")
+st.dataframe(filtered_df, use_container_width=True)
+st.success(f"Showing {len(filtered_df)} out of {len(df)} records.")
+
