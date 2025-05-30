@@ -25,6 +25,7 @@ if not st.session_state.logged_in:
             st.success(f"Welcome, {username}!")
         else:
             st.error("❌ Invalid username or password")
+    st.stop()
 
 # Load the Excel file
 @st.cache_data
