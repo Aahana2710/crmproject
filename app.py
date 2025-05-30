@@ -1,9 +1,30 @@
 import streamlit as st
 import pandas as pd
 
+# Simple username-password dictionary
+users = {
+    "admin": "admin123",
+    "aahana": "crmrocks",
+    "testuser": "test123"
+}
+
 # Page setup
 st.set_page_config(page_title="CRM Dashboard (India)", layout="wide")
-st.title("CRM Dashboard")
+
+# --- Login Check ---
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if not st.session_state.logged_in:
+    st.sidebar.title("🔐 Login")
+    username = st.sidebar.text_input("Username")
+    password = st.sidebar.text_input("Password", type="password")
+    if st.sidebar.button("Login"):
+        if username in users and users[username] == password:
+            st.session_state.logged_in = True
+            st.success(f"Welcome, {username}!")
+        else:
+            st.error("❌ Invalid username or password")
 
 # Load the Excel file
 @st.cache_data
