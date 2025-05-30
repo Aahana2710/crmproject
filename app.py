@@ -132,5 +132,5 @@ if search_name:
 # Display filtered data
 st.subheader("📄 Filtered Data")
 st.dataframe(filtered_df, use_container_width=True)
-st.success(f"Showing {len(filtered_df)} out of {len(df)} records.")
+st.success(f"Showing {len(filtered_df)} out of {len(df)} recordst.")
 
